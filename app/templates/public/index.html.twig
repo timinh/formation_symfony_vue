@@ -4,17 +4,6 @@
 
 {% block body %}
     <div class="landing-page">
-        <header class="hero">
-            <div class="container">
-                <h1>Gestion de Projets Simplifiée</h1>
-                <p class="lead">Une solution complète pour gérer vos projets, vos équipes et vos délais.</p>
-                <div class="cta-buttons">
-                    <a href="" class="btn btn-primary btn-lg">Se connecter</a>
-                    <a href="" class="btn btn-outline-light btn-lg">S'inscrire</a>
-                </div>
-            </div>
-        </header>
-
         <section class="features">
             <div class="container">
                 <h2 class="text-center mb-5">Fonctionnalités principales</h2>
@@ -48,43 +37,14 @@
             <div class="container">
                 <h2 class="text-center mb-5">Ce que nos clients disent</h2>
                 <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body">
-                                <p class="card-text fs-5 fst-italic">"Cette application a transformé notre façon de gérer les projets. Simple et efficace !"</p>
-                                <div class="d-flex align-items-center mt-3">
-                                    <div class="flex-shrink-0">
-                                        <img src="https://placehold.co/80" class="rounded-circle" alt="Marie Dupont">
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="card-title mb-0">Marie Dupont</h5>
-                                        <p class="card-subtitle text-muted">Directrice de projet, Entreprise XYZ</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-body">
-                                <p class="card-text fs-5 fst-italic">"L'interface intuitive et les fonctionnalités avancées en font un outil incontournable."</p>
-                                <div class="d-flex align-items-center mt-3">
-                                    <div class="flex-shrink-0">
-                                        <img src="https://placehold.co/80" class="rounded-circle" alt="Thomas Martin">
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="card-title mb-0">Thomas Martin</h5>
-                                        <p class="card-subtitle text-muted">Chef d'équipe, Société ABC</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {% for testimonial in testimonials %}
+                    {% include 'partials/card.html.twig' with testimonial %}
+                {% endfor %}
                 </div>
             </div>
         </section>
 
-        <section class="cta-section">
+        <section class="jumbotron bg-secondary text-white text-center py-5">
             <div class="container text-center">
                 <h2>Prêt à améliorer votre gestion de projet ?</h2>
                 <p>Rejoignez des milliers d'utilisateurs satisfaits dès aujourd'hui.</p>
