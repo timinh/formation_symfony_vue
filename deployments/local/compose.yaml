@@ -1,0 +1,16 @@
+services:
+
+###> containers ###
+    ###> frankenphp ###
+    app:
+        extends:
+            file: ../services/frankenphp.yaml
+            service: frankenphp-local
+    ### frankenphp ###
+    ###> mariadb ###
+    db:
+        extends:
+            file: ../services/mariadb.yaml
+            service: mariadb-local
+    ### mariadb ###
+### containers ###

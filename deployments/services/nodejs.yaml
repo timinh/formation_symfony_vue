@@ -1,0 +1,25 @@
+services:
+
+###> containers ###
+    ###> nodejs ###
+
+    ### base config ###
+    nodejs-base:
+        image: ${NODE_IMAGE}
+        working_dir: /home/node/app
+        container_name: ${APP_NAME}_front
+        command:
+            - /bin/sh
+            - '-c'
+            - 'yarn install && yarn dev'
+
+    ### local config ###
+    nodejs-local:
+        extends:
+            service: nodejs-base
+        volumes:
+            - '../../app/:/home/node/app:rw'
+        ports:
+            - '${NODE_PORT:-5173}:5173'
+    ### nodejs ###
+### containers ###

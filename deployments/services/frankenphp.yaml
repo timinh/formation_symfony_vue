@@ -1,0 +1,27 @@
+services:
+
+###> containers ###
+    ###> frankenphp ###
+    
+    ### base config ###
+    frankenphp-base:
+        image: ${SERVER_IMAGE}
+        container_name: ${APP_NAME}_app
+        hostname: ${HOST_NAME}
+        restart: unless-stopped
+        environment:
+            TZ: Europe/Paris
+            CORS_ALLOW_ORIGIN: '*'
+            SERVER_NAME: ':80'
+
+    ### local config ###
+    frankenphp-local:
+        extends: frankenphp-base
+        restart: 'no'
+        volumes:
+            - ../../app:/app
+            - ../local/Caddyfile:/etc/caddy/Caddyfile
+        ports:
+            - "${SERVER_PORT:-80}:80"
+    ### frankenphp ###
+### containers ###

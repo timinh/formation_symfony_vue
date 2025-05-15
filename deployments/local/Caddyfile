@@ -1,0 +1,18 @@
+{
+    frankenphp
+    log default {
+        output file /var/log/caddy.log {
+			roll_size 2MiB
+			roll_keep_for 72h
+		}
+        format json
+    }
+	auto_https off
+}
+
+{$SERVER_NAME:localhost} {
+        root * public/
+        encode zstd br gzip
+
+        php_server
+}

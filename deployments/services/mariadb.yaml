@@ -1,0 +1,32 @@
+services:
+
+###> containers ###
+    ###> mariadb ###
+
+    ### base config ###
+    mariadb-base:
+        image: '${DB_IMAGE}:${DB_VERSION}'
+        container_name: ${APP_NAME}_db
+        volumes:
+            ## sous linux
+            - '/data/${APP_NAME}/db_data:/var/lib/mysql'
+            ## sous windows
+            # - './data/db_data:/var/lib/mysql'
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${APP_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        restart: unless-stopped
+
+    ### local config ###
+    mariadb-local:
+        extends:
+            service: mariadb-base
+        # volumes:
+        #     - '../../app/var/database:/var/transfert'
+        ports:
+            - '127.0.0.1:${DB_PORT:-3306}:3306'
+        restart: 'no'
+    ### mariadb ###
+### containers ###

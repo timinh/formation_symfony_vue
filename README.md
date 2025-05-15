@@ -11,7 +11,7 @@
 
 - installation complète (**10 min**)
   
-  - sous linux : cloner repo git [GitHub - timinh/starter_kit: Starter Kit For Php projects](https://github.com/timinh/starter_kit)
+  - sous linux : cloner repo git [Formation symfony-vue](https://github.com/timinh/formation_symfony_vue.git)
 - controleurs + routes + twig ( **25 min** )
   
   - créer un controleur via le maker-bundle
