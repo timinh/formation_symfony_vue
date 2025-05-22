@@ -33,6 +33,7 @@ final class ProjectController extends AbstractController
         $project = new Project();
         $form = $this->createForm(ProjectForm::class, $project);
         $form->handleRequest($request);
+
         if( $form->isSubmitted() && $form->isValid()) {
             $project = $form->getData();
             $this->entityManager->persist($project);
@@ -40,7 +41,8 @@ final class ProjectController extends AbstractController
             return $this->redirectToRoute('app_project');
         }
 
-        return $this->render('project/form.html.twig', [
+        return $this->render('project/form_create_edit.html.twig', [
+            'titleForm' => 'Créer un projet',
             'form' => $form
         ]);
     }
@@ -50,6 +52,31 @@ final class ProjectController extends AbstractController
     {
         return $this->render('project/show.html.twig', [
             'project' => $project
+        ]);
+    }
+
+    #[Route('/project/{id}/delete', name: 'app_project_delete', methods: ['POST'])]
+    public function delete(Project $project): Response
+    {
+        $this->entityManager->remove($project);
+        $this->entityManager->flush();
+        return $this->redirectToRoute('app_project');
+    }
+
+    #[Route('/project/{id}/edit', name: 'app_project_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Project $project): Response
+    {
+        $form = $this->createForm(ProjectForm::class, $project);
+        $form->handleRequest($request);
+
+        if( $form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->flush();
+            return $this->redirectToRoute('app_project');
+        }
+
+        return $this->render('project/form_create_edit.html.twig', [
+            'titleForm' => 'Modifier un projet',
+            'form' => $form
         ]);
     }
 }

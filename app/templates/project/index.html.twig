@@ -3,7 +3,6 @@
 {% block title %}Project index{% endblock %}
 
 {% block body %}
-<div class="container">
     <h1>Project index</h1>
 
     <table class="table">
@@ -22,7 +21,9 @@
                 <td>{{ project.title }}</td>
                 <td>{{ project.description }}</td>
                 <td>
-                    <a href="{{ path('app_project_show', {'id': project.id}) }}">show</a>
+                    <a href="{{ path('app_project_show', {'id': project.id}) }}"><button type="submit" class="btn btn-primary">Voir</button></a>
+                    <a href="{{ path('app_project_edit', {'id': project.id}) }}"><button type="submit" class="btn btn-secondary">Modifier</button></a>
+                    <form action="/project/{{ project.id }}/delete" method="POST"  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')"><button type="submit" class="btn btn-danger">Supprimer</button></form>
                 </td>
             </tr>
         {% else %}
@@ -34,5 +35,4 @@
     </table>
 
     <a href="{{ path('app_project_create') }}">Créer un projet</a>
-</div>
 {% endblock %}

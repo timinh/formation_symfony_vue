@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ titleForm }}{% endblock %}
+
+{% block body %}
+    <h1>{{ titleForm }}</h1>
+
+    {% include 'partials/projectForm.html.twig' with { form: form }  %}
+
+    <a class="btn btn-secondary" href="{{ path('app_project') }}">Retour</a>
+{% endblock %}
