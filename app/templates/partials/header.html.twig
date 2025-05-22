@@ -6,7 +6,11 @@
                 <p class="lead">Une solution complète pour gérer vos projets, vos équipes et vos délais.</p>
             </div>
             <div class="cta-buttons">
-                <a href="{{ path('app_project') }}" class="btn btn-primary btn-lg">Se connecter</a>
+                {% if not is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg">Se connecter</a>
+                {% else %}
+                    <a href="{{ path('app_logout') }}" class="btn btn-secondary btn-lg">Me déconnecter</a>
+                {% endif %}
             </div>
         </div>
     </div>

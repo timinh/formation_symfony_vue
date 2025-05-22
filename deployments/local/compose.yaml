@@ -13,4 +13,9 @@ services:
             file: ../services/mariadb.yaml
             service: mariadb-local
     ### mariadb ###
+
+    maildev:
+        extends:
+            file: ../services/maildev.yaml
+            service: maildev-local
 ### containers ###
