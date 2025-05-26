@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Security;
+
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+
+class CasUserProvider implements UserProviderInterface
+{
+    public function __construct(
+        private readonly EntityManagerInterface $em)
+    {        
+    }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        $user = $this->em->getRepository(User::class)->findOneBy(['username' => $identifier]);
+        if ($user !== null) {
+            return $user;
+        }
+
+        $user = (new User)
+            ->setUsername($identifier)
+            ->setPassword($identifier)
+            ->setEmail($identifier . '@uca.fr')
+            ->setRoles(['ROLE_USER']);
+        $this->em->persist($user);
+        $this->em->flush();
+        
+        return $user;
+    }
+
+    public function refreshUser(UserInterface $user): UserInterface
+    {
+        if (!$user instanceof User) {
+            throw new \InvalidArgumentException('The user must be an instance of ' . User::class);
+        }
+
+        // Here you would typically reload the user from the database or another source
+        // For this example, we will just return the same user
+        return $user;
+    }
+    
+    public function supportsClass(string $class): bool
+    {
+        return User::class === $class;
+    }
+}

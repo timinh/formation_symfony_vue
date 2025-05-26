@@ -27,6 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
+    private $casAttributes = [];
+
     /**
      * @var string The hashed password
      */
@@ -134,5 +136,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function getCasAttributes(): array
+    {
+        return $this->casAttributes;
+    }
+    
+    public function setCasAttributes(array $casAttributes): static
+    {
+        $this->casAttributes = $casAttributes;
+
+        return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles(), true);
     }
 }

@@ -21,9 +21,11 @@
                 <td>{{ project.title }}</td>
                 <td>{{ project.description }}</td>
                 <td>
-                    <a href="{{ path('app_project_show', {'id': project.id}) }}"><button type="submit" class="btn btn-primary">Voir</button></a>
-                    <a href="{{ path('app_project_edit', {'id': project.id}) }}"><button type="submit" class="btn btn-secondary">Modifier</button></a>
-                    <form action="/project/{{ project.id }}/delete" method="POST"  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')"><button type="submit" class="btn btn-danger">Supprimer</button></form>
+                    {% if is_granted('PROJECT_VIEW') %}<a href="{{ path('app_project_show', {'id': project.id}) }}"><button type="submit" class="btn btn-primary">Voir</button></a>{% endif %}
+                    {% if is_granted('PROJECT_EDIT') %}<a href="{{ path('app_project_edit', {'id': project.id}) }}"><button type="submit" class="btn btn-secondary">Modifier</button></a>{% endif %}
+                    {% if is_granted('PROJECT_DELETE') %}
+                    <form action="{{ path('app_project_delete', {'id': project.id}) }}" method="POST"  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')"><button type="submit" class="btn btn-danger">Supprimer</button></form>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

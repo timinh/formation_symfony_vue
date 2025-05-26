@@ -43,7 +43,8 @@
         "symfony/yaml": "7.2.*",
         "symfonycasts/verify-email-bundle": "^1.17",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "yraiso/casauth-bundle": "^1.0"
     },
     "config": {
         "allow-plugins": {

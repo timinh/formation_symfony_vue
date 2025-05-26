@@ -7,7 +7,7 @@
             </div>
             <div class="cta-buttons">
                 {% if not is_granted('ROLE_USER') %}
-                    <a href="{{ path('app_login') }}" class="btn btn-primary btn-lg">Se connecter</a>
+                    <a href="{{ path('app_project') }}" class="btn btn-primary btn-lg">Se connecter</a>
                 {% else %}
                     <a href="{{ path('app_logout') }}" class="btn btn-secondary btn-lg">Me déconnecter</a>
                 {% endif %}

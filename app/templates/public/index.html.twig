@@ -44,13 +44,13 @@
             </div>
         </section>
         {% if not is_granted('ROLE_USER') %}
-            <section class="jumbotron bg-secondary text-white text-center py-5">
+            {# <section class="jumbotron bg-secondary text-white text-center py-5">
                 <div class="container text-center">
                     <h2>Prêt à améliorer votre gestion de projet ?</h2>
                     <p>Rejoignez des milliers d'utilisateurs satisfaits dès aujourd'hui.</p>
                     <a href="/register" class="btn btn-primary btn-lg mt-3">S'inscrire maintenant</a>
                 </div>
-            </section>
+            </section> #}
         {% endif %}
     </div>
 {% endblock %}

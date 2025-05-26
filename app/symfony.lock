@@ -289,5 +289,8 @@
     },
     "twig/extra-bundle": {
         "version": "v3.21.0"
+    },
+    "yraiso/casauth-bundle": {
+        "version": "v1.0.7"
     }
 }

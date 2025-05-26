@@ -1,0 +1,7 @@
+y_raiso_cas_auth:
+  server_login_url: 'https://ent.uca.fr/cas/'
+  server_validation_url: 'https://ent.uca.fr/cas/serviceValidate'
+  server_logout_url: 'https://ent.uca.fr/cas/logout'
+  #server_force_redirect_https: '%env(bool:REDIRECT_HTTPS)%'
+  xml_namespace: 'cas'
+  options: []

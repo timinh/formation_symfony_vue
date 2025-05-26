@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/status')]
+#[Route('/private/status')]
 final class StatusController extends AbstractController
 {
     #[Route(name: 'app_status_index', methods: ['GET'])]

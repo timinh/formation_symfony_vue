@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdd429935b3cb77b8a3be92394ebeb95",
+    "content-hash": "0f99207bcf67871de9b4f155f91f93d4",
     "packages": [
         {
             "name": "composer/semver",
@@ -7580,6 +7580,62 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "yraiso/casauth-bundle",
+            "version": "v1.0.7",
+            "target-dir": "YRaiso/CasAuthBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scar63/CasAuthBundle.git",
+                "reference": "23dfb09e63bfe730d2690cde31ebcfc2aa2bedfa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scar63/CasAuthBundle/zipball/23dfb09e63bfe730d2690cde31ebcfc2aa2bedfa",
+                "reference": "23dfb09e63bfe730d2690cde31ebcfc2aa2bedfa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/config": "^5.4|^6.0|^7.0",
+                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+                "symfony/http-client": "^5.4|^6.0|^7.0",
+                "symfony/http-foundation": "^5.4|^6.0|^7.0",
+                "symfony/http-kernel": "^5.4|^6.0|^7.0",
+                "symfony/security-bundle": "^5.4|^6.0|^7.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "YRaiso\\CasAuthBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yoann Raison",
+                    "email": "yoann.raison@uca.fr"
+                }
+            ],
+            "description": "Basic CAS (SSO) authenticator for Symfony 5.4, 6.0 and 7.0",
+            "keywords": [
+                "SSO",
+                "Symfony 5.4",
+                "Symfony 6.0",
+                "Symfony 7.0",
+                "YRaiso",
+                "authenticator",
+                "cas"
+            ],
+            "support": {
+                "issues": "https://github.com/scar63/CasAuthBundle/issues",
+                "source": "https://github.com/scar63/CasAuthBundle/tree/v1.0.7"
+            },
+            "time": "2024-02-13T16:23:35+00:00"
         }
     ],
     "packages-dev": [
