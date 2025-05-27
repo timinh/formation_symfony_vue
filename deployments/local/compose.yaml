@@ -16,6 +16,13 @@ services:
             service: mariadb-local
     ### mariadb ###
 
+    ###> nodejs ###
+    nodejs:
+        extends:
+            file: ../services/nodejs.yaml
+            service: nodejs-local
+    ### nodejs ###
+
     maildev:
         extends:
             file: ../services/maildev.yaml

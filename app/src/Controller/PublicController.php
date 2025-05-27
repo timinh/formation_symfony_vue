@@ -8,7 +8,16 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class PublicController extends AbstractController
 {
-    #[Route('/', name: 'app_public')]
+
+    #[Route('/', name: 'app_public_vue')]
+    #[Route('/project', name: 'app_project')]
+    #[Route('/project/{id}', name: 'app_project_page')]
+    public function indexVue()
+    {
+        return $this->render('baseVue.html.twig');
+    }
+
+    #[Route('/old', name: 'app_public')]
     public function index(): Response
     {
         $testimonials = [
