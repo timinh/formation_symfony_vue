@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute} from "vue-router";
-import {useProjectStore} from "../stores/project.js";
+import {useProjectStore} from "../../stores/project.js";
 import {onMounted, ref} from "vue";
 const projectStore = useProjectStore();
 
@@ -16,6 +16,12 @@ onMounted(async () => {
   project.value = projectStore.getProjectById(projectId);
 });
 </script>
+
+<route type="json">
+{
+  "name": "projectPage",
+}
+</route>
 
 <template>
   <div>

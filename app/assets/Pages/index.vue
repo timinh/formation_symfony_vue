@@ -17,7 +17,3 @@ onMounted(() => {
   <p v-if="projectStore.isLoading">Chargement en cours...</p>
   <project-list v-if="!projectStore.isLoading" :projects="projectStore.projects"></project-list>
 </template>
-
-<style scoped>
-
-</style>

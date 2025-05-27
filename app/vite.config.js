@@ -1,6 +1,9 @@
 import { defineConfig } from "vite";
 import symfonyPlugin from "vite-plugin-symfony";
 import vue from '@vitejs/plugin-vue';
+import VueRouter from 'unplugin-vue-router/vite';
+import { fileURLToPath } from 'node:url'
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 
 /* if you're using React */
 // import react from '@vitejs/plugin-react';
@@ -12,7 +15,18 @@ export default defineConfig({
         cors: true
     },
     plugins: [
-        vue(),
+        VueRouter({
+            routesFolder: ['./assets/Pages'],
+            extensions: ['.vue'],
+        }),
+        quasar({
+            sassVariables: fileURLToPath(
+                new URL('./assets/css/quasar-variables.sass', import.meta.url)
+            )
+        }),
+        vue({
+            template: { transformAssetUrls }
+        }),
         symfonyPlugin({
             viteDevServerHostname: 'localhost',
         }),
