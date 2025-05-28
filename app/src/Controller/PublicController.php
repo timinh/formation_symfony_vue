@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Service\Security\TokenService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class PublicController extends AbstractController
 {
@@ -12,9 +14,21 @@ final class PublicController extends AbstractController
     #[Route('/', name: 'app_public_vue')]
     #[Route('/project', name: 'app_project')]
     #[Route('/project/{id}', name: 'app_project_page')]
-    public function indexVue()
+    public function indexVue(
+        #[Autowire('%env(APP_SECRET)%')] string $app_secret,
+        TokenService $jwt
+    )
     {
-        return $this->render('baseVue.html.twig');
+        $payload = \json_encode([
+            'user_id' => $this->getUser()->getUserIdentifier(),
+            'roles' => $this->getUser()->getRoles()
+        ]);
+        $user_token = $jwt->generateToken($payload, $app_secret);
+        
+        return $this->render(
+            'baseVue.html.twig',
+            compact('user_token')
+        );
     }
 
     #[Route('/old', name: 'app_public')]

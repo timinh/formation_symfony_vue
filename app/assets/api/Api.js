@@ -1,10 +1,13 @@
 import axios from "axios";
 
 export function api (url, method, data = null) {
-    let headers = {};
+    let headers = {
+      "Authorization": "Bearer " + user_token
+    };
     if(method === 'post') {
         headers = {
             'Content-Type': 'application/ld+json',
+            ...headers
         };
     }
 

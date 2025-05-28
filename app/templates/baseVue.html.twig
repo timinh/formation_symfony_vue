@@ -15,5 +15,10 @@
     <div id="app">
         Chargement...
     </div>
+    {% if user_token %}
+        <script language="javascript">
+            const user_token = "{{ user_token|e('js') }}"
+        </script>
+    {% endif %}
      </body>
 </html>

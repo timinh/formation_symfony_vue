@@ -38,7 +38,7 @@ class TokenAuthenticator extends AbstractAuthenticator
         $apiToken = \str_replace('Bearer ', '', (string) $request->headers->get('Authorization'));
         $payload = $this->jwt->getPayload($apiToken);
         return new SelfValidatingPassport(new UserBadge($payload->user_id, function ($uid) {
-            $user = $this->userRepository->findOneBy(['id' => $uid]);
+            $user = $this->userRepository->findOneBy(['username' => $uid]);
 
             return $user ?: '';
         }));
