@@ -19,13 +19,13 @@ export default defineConfig({
             routesFolder: ['./assets/Pages'],
             extensions: ['.vue'],
         }),
+        vue({
+            template: { transformAssetUrls }
+        }),
         quasar({
             sassVariables: fileURLToPath(
                 new URL('./assets/css/quasar-variables.sass', import.meta.url)
             )
-        }),
-        vue({
-            template: { transformAssetUrls }
         }),
         symfonyPlugin({
             viteDevServerHostname: 'localhost',
