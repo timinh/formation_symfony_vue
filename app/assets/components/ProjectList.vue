@@ -12,11 +12,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <ul v-if="props.projects.length > 0">
-    <router-link v-for="project in props.projects" :to="{ name: 'projectPage', params: { id: project.id } }" :key="project.id">
-      <project-card :project></project-card>
-    </router-link>
-  </ul>
+  <div class="row q-gutter-sm">
+    <project-card v-for="project in props.projects"  :project :key="project.id"></project-card>
+  </div>
 </template>
 
 <style scoped>

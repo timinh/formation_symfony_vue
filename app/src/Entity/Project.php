@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 6,
 )]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial', 'description' => 'ipartial'])]
-#[ApiFilter(OrderFilter::class, properties: ['title' => 'ASC'])]
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Project
 {
     #[ORM\Id]

@@ -6,17 +6,12 @@
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title>
-          <q-avatar>
-            <q-img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg"/>
-          </q-avatar>
-          test
+            <q-img src="https://davidmenidrey.com/unicaen/images/unicaen_logo.png" width="120px" height="50px" fit="contains"/>
         </q-toolbar-title>
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/page1" label="Page One" />
-        <q-route-tab to="/page2" label="Page Two" />
-        <q-route-tab to="/page3" label="Page Three" />
+        <q-route-tab to="/project" label="Projets" />
       </q-tabs>
     </q-header>
 
@@ -33,7 +28,8 @@
 
 <script>
 import { ref } from 'vue'
-
+import {useQuasar} from "quasar";
+const $q = useQuasar();
 export default {
   setup () {
     const leftDrawerOpen = ref(false)
