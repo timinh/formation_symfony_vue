@@ -18,3 +18,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    cas_user_provider:
+        class: App\Security\CasUserProvider
+
+    YRaiso\CasAuthBundle\EventListener\LogoutListener:
+        arguments:
+            $logoutUrl: 'https://ent.uca.fr/cas/logout'
+        tags:
+            -   name: 'kernel.event_listener'
+                event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
+                dispatcher: security.event_dispatcher.main

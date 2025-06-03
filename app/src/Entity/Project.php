@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
+#[ApiResource()]
 class Project
 {
     #[ORM\Id]
@@ -17,15 +20,18 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['project:read','project:mini', 'task:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['project:read','project:mini'])]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Task>
      */
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project', orphanRemoval: true)]
+    #[Groups(['project:read'])]
     private Collection $tasks;
 
     public function __construct()
