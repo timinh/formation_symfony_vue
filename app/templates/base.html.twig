@@ -12,23 +12,6 @@
         {% endblock %}
     </head>
     <body>
-    {% for message in app.session.flashbag.get('success') %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
-
-    {% for message in app.session.flashbag.get('error') %}
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    {% endfor %}
-    <div class="container">
-        {% include 'partials/header.html.twig' %}
-        {% block body %}{% endblock %}
-    </div>
-
+    <div id="app"></div>
     </body>
 </html>
