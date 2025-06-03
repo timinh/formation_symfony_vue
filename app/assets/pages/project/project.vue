@@ -6,9 +6,10 @@ import ProjectList from "../../components/projectList.vue";
 const projects = ref([]);
 
 const getProjects = () => {
+    projects.value = [];
     api('/api/projects', 'GET').then((response) => {
         projects.value = response.data.member;
-    })
+    });
 }
 
 onMounted(() => {
@@ -18,8 +19,11 @@ onMounted(() => {
 </script>
 
 <template>
-<h2>Liste de mes projets...</h2>
-<project-list :projects/>
+    <div class="q-ma-md">
+        <div class="text-h2"><q-btn icon="refresh" @click="getProjects"/>Liste de mes projets</div>
+        <project-list :projects/>
+    </div>
+
 </template>
 
 <style scoped>

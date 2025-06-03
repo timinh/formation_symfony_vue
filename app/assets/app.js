@@ -34,7 +34,7 @@ const router = createRouter({
 const app = createApp(App);
 app.use(router);
 app.use(Quasar, {
-    plugin: {Notify, Dialog}
+    plugin: {Notify, Dialog},
 })
 app.mount('#app');
 
