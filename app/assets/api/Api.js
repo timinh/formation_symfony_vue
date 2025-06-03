@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function api(url, method, data = null) {
     return axios({
-        url: url,
+        url: '/api/' + url,
         method: method,
         data: data
     })

@@ -14,7 +14,7 @@
             </q-toolbar>
 
             <q-tabs align="left">
-                <q-route-tab :to="{name: 'projectPage'}" label="Projets" />
+                <q-route-tab to="/project" label="Projets" />
             </q-tabs>
         </q-header>
 
