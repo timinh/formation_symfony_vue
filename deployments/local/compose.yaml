@@ -12,5 +12,11 @@ services:
         extends:
             file: ../services/mariadb.yaml
             service: mariadb-local
+
+    nodejs:
+        extends:
+            file: ../services/nodejs.yaml
+            service: nodejs-local
+
     ### mariadb ###
 ### containers ###
