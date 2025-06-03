@@ -1,0 +1,7 @@
+<div class="card" style="width: 18rem; margin: 5px">
+    <div class="card-body">
+        <h5 class="card-title">{{ project.title }}</h5>
+        <p class="card-text">{{ project.description }}</p>
+        <a href="{{ path('app_project_show', {'project': project.id}) }}" class="card-link">Voir le projet</a>
+    </div>
+</div>
