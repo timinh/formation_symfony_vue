@@ -19,6 +19,7 @@ class Project
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['project:read','project:mini'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
