@@ -5,6 +5,7 @@ import {Notify} from "quasar";
 export const useProjectStore = defineStore('project', {
     state: () => ({
         projects: [],
+        currentProject: null,
         isLoading: false,
     }),
     actions: {
@@ -38,13 +39,7 @@ export const useProjectStore = defineStore('project', {
                     type: 'positive',
                     position: 'top',
                 });
-                // replace the project with id in the projects array
-                const index = this.projects.findIndex(project => project.id === id);
-                if (index !== -1) {
-                    this.projects[index] = response.data.member;
-                } else {
-                    this.projects.push(response.data.member);
-                }
+                this.currentProject = response.data;
             } catch (error) {
                 Notify.create({
                     message: error,

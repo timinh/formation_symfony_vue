@@ -2,12 +2,26 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\NumericFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\TaskRepository;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['task:read', 'project:read']],
+    operations: [
+        new GetCollection()
+    ]
+)]
+#[ApiFilter(NumericFilter::class, properties: ['project.id' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['start_date' => 'DESC'])]
 class Task
 {
     #[ORM\Id]

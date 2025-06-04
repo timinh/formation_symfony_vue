@@ -2,21 +2,29 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\StatusRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['status.read', 'task:read']],
+    operations: [
+        new GetCollection()
+    ]
+)]
 class Status
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['project:read'])]
+    #[Groups(['status.read', 'task:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['project:read'])]
+    #[Groups(['status.read', 'task:read'])]
     private ?string $libelle = null;
 
     public function getId(): ?int

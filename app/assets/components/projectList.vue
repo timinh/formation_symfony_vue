@@ -1,7 +1,4 @@
 <script setup>
-import { useProjectStore} from "../stores/project.js";
-
-const store = useProjectStore();
 const props = defineProps({
     projects: {
         type: Array,
@@ -21,7 +18,7 @@ const props = defineProps({
                 <div class="text-subtitle2">{{project.description}}</div>
             </q-card-section>
             <q-card-actions align="center">
-                <q-btn icon="chevron_right" color="primary" @click="store.getProjectById(project.id)" label="Détail du projet"/>
+                <q-btn icon="chevron_right" color="primary" :to="`/project/${project.id}`" label="Détail du projet"/>
             </q-card-actions>
         </q-card>
     </div>

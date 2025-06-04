@@ -11,7 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
-#[ApiResource()]
+#[ApiResource(
+    normalizationContext: ['groups' => ['project:read']],
+)]
 class Project
 {
     #[ORM\Id]
@@ -31,7 +33,6 @@ class Project
      * @var Collection<int, Task>
      */
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project', orphanRemoval: true)]
-    #[Groups(['project:read'])]
     private Collection $tasks;
 
     public function __construct()
@@ -96,5 +97,11 @@ class Project
         }
 
         return $this;
+    }
+
+    #[Groups(['project:read'])]
+    public function getNumTasks(): int
+    {
+        return $this->tasks->count();
     }
 }
