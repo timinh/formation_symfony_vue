@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -9,11 +11,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['project:read']],
 )]
+#[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 class Project
 {
     #[ORM\Id]
@@ -24,6 +28,8 @@ class Project
 
     #[ORM\Column(length: 255)]
     #[Groups(['project:read','project:mini', 'task:read'])]
+    #[Assert\NotNull()]
+    #[Assert\NotBlank()]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

@@ -29,7 +29,7 @@ class AppFixtures extends Fixture
             $project->setTitle($faker->company);
             $project->setDescription($faker->text());
             $manager->persist($project);
-            for ($j=1; $j< $faker->randomNumber(2); $j++) {
+            for ($j=1; $j< $faker->randomNumber(4); $j++) {
                 $task = new Task();
                 $task->setTitle($faker->sentence(6, true));
                 $task->setDescription($faker->text());

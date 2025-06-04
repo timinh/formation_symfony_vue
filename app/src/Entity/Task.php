@@ -42,6 +42,7 @@ class Task
     private ?\DateTime $start_date = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['project:read', 'task:read'])]
     private ?\DateTime $due_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]

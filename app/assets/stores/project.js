@@ -12,7 +12,7 @@ export const useProjectStore = defineStore('project', {
         async getProjects() {
             this.isLoading = true;
             try {
-                const response = api('projects', 'GET').then((response) => {
+                const response = api('projects?order[id]=DESC', 'GET').then((response) => {
                     this.projects = response.data.member;
                     Notify.create({
                         message: 'Projects fetched successfully',
@@ -49,6 +49,60 @@ export const useProjectStore = defineStore('project', {
             } finally {
                 this.isLoading = false;
             }
+        },
+        async createProject(project) {
+            this.isLoading = true;
+            try {
+                await api('projects', 'POST', project)
+                Notify.create({
+                    message: 'Le projet a été créé avec succès',
+                    type: 'positive',
+                    position: 'top',
+                });
+            } catch (e) {
+                Notify.create({
+                    message: e,
+                    type: 'negative',
+                    position: 'top',
+                });
+            }
+            this.isLoading = false;
+        },
+        async deleteProject(id) {
+            this.isLoading = true;
+            try {
+                await api('projects/' + id, 'DELETE')
+            } catch (e) {
+                Notify.create(
+                    {
+                        message: e,
+                        type: 'negative',
+                        position: 'top',
+                    }
+                )
+            }
+            this.isLoading = false;
+        },
+        updateProject(project) {
+            this.isLoading = true;
+            api('projects/' + project.id, 'PATCH', project)
+                .then(() => {
+                    Notify.create({
+                        message: 'Le projet a été mis à jour avec succès',
+                        type: 'positive',
+                        position: 'top',
+                    });
+                })
+                .catch((e) => {
+                    Notify.create({
+                        message: e,
+                        type: 'negative',
+                        position: 'top',
+                    });
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
         }
-    }
+     }
 })
