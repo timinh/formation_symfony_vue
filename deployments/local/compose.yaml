@@ -18,5 +18,10 @@ services:
             file: ../services/nodejs.yaml
             service: nodejs-local
 
+    maildev:
+        extends:
+            file: ../services/maildev.yaml
+            service: maildev-local
+
     ### mariadb ###
 ### containers ###
