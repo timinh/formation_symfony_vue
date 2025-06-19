@@ -2,10 +2,11 @@
 
 namespace App\Service;
 
+use App\Dto\MailDto;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
 
 class SendMailService
 {
@@ -19,16 +20,16 @@ class SendMailService
     /**
      * @throws TransportExceptionInterface
      */
-    public function sendMail(string $to, string $subject, string $body): void
+    public function sendMail(MailDto $mailContent): void
     {
         $email = new TemplatedEmail();
         $email
             ->from($this->fromEmail)
-            ->to($to)
-            ->subject($subject)
+            ->to($mailContent->to)
+            ->subject($mailContent->subject)
             ->htmlTemplate('emails/template.html.twig')
             ->context([
-                'body' => $body,
+                'body' => $mailContent->body,
             ]);
 
         $this->mailer->send($email);

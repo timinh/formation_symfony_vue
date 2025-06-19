@@ -6,3 +6,6 @@ api_platform:
         stateless: false
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
+        - '%kernel.project_dir%/src/Dto'
