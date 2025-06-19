@@ -27,10 +27,3 @@ services:
             -   name: 'kernel.event_listener'
                 event: 'Symfony\Component\Security\Http\Event\LogoutEvent'
                 dispatcher: security.event_dispatcher.main
-    App\State\ProjectStateProvider:
-        tags: [ 'api_platform.state_provider' ]
-        arguments:
-            $collectionProvider: '@api_platform.doctrine.orm.state.collection_provider'
-            $itemProvider: '@api_platform.doctrine.orm.state.item_provider'
-    Symfony\Component\RateLimiter\RateLimiterFactoryInterface:
-        tags: ['rate_limiter']
