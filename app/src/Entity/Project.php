@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,9 +17,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['project:read']]
+    normalizationContext: ['groups' => ['project:read']],
+    operations: [
+        new GetCollection(),
+        new Post(denormalizationContext: ['groups' => ['project:write']])
+    ]
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
+#[ORM\HasLifecycleCallbacks]
 class Project
 {
     #[ORM\Id]
@@ -27,13 +34,13 @@ class Project
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['project:read','project:mini', 'task:read'])]
+    #[Groups(['project:read','project:mini', 'task:read', 'project:write'])]
     #[Assert\NotNull()]
     #[Assert\NotBlank()]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['project:read','project:mini'])]
+    #[Groups(['project:read','project:mini', 'project:write'])]
     private ?string $description = null;
 
     /**
@@ -41,6 +48,10 @@ class Project
      */
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'project', orphanRemoval: true)]
     private Collection $tasks;
+
+    #[ORM\Column]
+    #[Groups(['project:read'])]
+    private ?\DateTime $creationDate = null;
 
     public function __construct()
     {
@@ -110,5 +121,24 @@ class Project
     public function getNumTasks(): int
     {
         return $this->tasks->count();
+    }
+
+    public function getCreationDate(): ?\DateTime
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTime $creationDate): static
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function setCreationDateNow()
+    {
+        $this->creationDate = new \DateTime();
+        return $this;
     }
 }
