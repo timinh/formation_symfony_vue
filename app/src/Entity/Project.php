@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProjectRepository;
-use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,10 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['project:read']],
-    operations: [
-        new GetCollection(),
-        new Post(denormalizationContext: ['groups' => ['project:write']])
-    ]
+    denormalizationContext: ['groups' => ['project:write']],
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 #[ORM\HasLifecycleCallbacks]
