@@ -1,8 +1,15 @@
 import axios from "axios";
 
+let token = '123'
+try{
+  token = user_token
+} catch(e){
+}
+
 export function api(url, method, data = null) {
     let header = {
         'Content-Type': 'application/ld+json',
+        'Authorization': 'Bearer ' + token
     }
 
     if(method === 'PATCH') {
