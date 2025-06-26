@@ -20,7 +20,7 @@ services:
         restart: 'no'
         volumes:
             - ../../app:/app
-            - ../local/Caddyfile:/etc/caddy/Caddyfile
+            # - ../local/Caddyfile:/etc/caddy/Caddyfile
         ports:
             - "${SERVER_PORT:-80}:80"
     ### frankenphp ###
