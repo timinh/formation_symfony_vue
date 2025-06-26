@@ -16,14 +16,7 @@
     {% if user_token %}
         <script language="javascript">
             const user_token = "{{ user_token|e('js') }}"
-
-            const eventSource = new EventSource("{{ mercure([
-                'see_about',
-            ])|escape('js') }}");
-
-            eventSource.onmessage = event => {
-                console.log(JSON.parse(event.data));
-            }
+            const aboutUrl = "{{ mercure(['see_about']) }}";
         </script>
     {% endif %}
     </body>

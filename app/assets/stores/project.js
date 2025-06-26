@@ -40,6 +40,17 @@ export const useProjectStore = defineStore('project', {
                     position: 'top',
                 });
                 this.currentProject = response.data;
+                if(response.headers.link) {
+                    const links = response.headers.link.split(',');
+                    const nextLink = links.find(link => link.includes('rel="mercure"'));
+                    if (nextLink) {
+                        const nextUrl = nextLink.split(';')[0].trim().slice(1, -1);
+                        const eventSource = new EventSource(nextUrl+"?topic=http://dev.local.uca.fr/api/projects/139");
+                        eventSource.onmessage = (event) => {
+                            this.currentProject = JSON.parse(event.data);
+                        }
+                    }
+                }
             } catch (error) {
                 Notify.create({
                     message: error,

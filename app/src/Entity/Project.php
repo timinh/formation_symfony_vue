@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     normalizationContext: ['groups' => ['project:read']],
     denormalizationContext: ['groups' => ['project:write']],
+    mercure: true
 )]
 #[ApiFilter(OrderFilter::class, properties: ['id' => 'DESC'])]
 #[ORM\HasLifecycleCallbacks]
