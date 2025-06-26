@@ -6,6 +6,7 @@ import { useTaskStore } from '../../stores/task.js';
 import { useUserStore } from '../../stores/user.js';
 import {useQuasar} from "quasar";
 import EditProjectDialog from "../../components/editProjectDialog.vue";
+import TaskDialog from "../../components/taskDialog.vue";
 
 const $q = useQuasar();
 const store = useProjectStore();
@@ -15,6 +16,9 @@ const route = useRoute();
 const router = useRouter();
 
 const openDialogEdit = ref(false);
+
+const openTaskDialog = ref(false);
+const taskDialogMode= ref('add');
 
 const deleteProject = () => {
     $q.dialog({
@@ -30,6 +34,26 @@ const deleteProject = () => {
         await store.deleteProject(store.currentProject.id);
         router.push('/project');
     })
+}
+
+const addTaskDialog = () => {
+    openTaskDialog.value = true;
+    taskDialogMode.value = 'add';
+}
+
+const addTaskToProject = async (task) => {
+    task.project = '/api/projects/' + route.params.id;
+    task.status = '/api/statuses/'+ task.status.id;
+    try{
+        await taskStore.createTask(task)
+        await taskStore.getTasks(route.params.id);
+    } catch (error) {
+        $q.notify({
+            type: 'negative',
+            message: 'Erreur lors de l\'ajout de la tâche'
+        });
+    }
+    openTaskDialog.value = false;
 }
 
 onMounted(() => {
@@ -52,6 +76,7 @@ onMounted(() => {
     <div v-if="store.isloading" class="q-ma-md">
         <q-spinner-dots color="primary" size="50px" />
     </div>
+    <q-btn icon="add" color="primary" label="Ajouter une tâche" v-if="userStore.roles.includes('ROLE_ADMIN')" @click="addTaskDialog"/>
     <q-scroll-area style="height: 500px">
         <q-item v-for="task in taskStore.tasks" :key="task.id" clickable>
             <q-item-section>
@@ -60,7 +85,13 @@ onMounted(() => {
                 <q-item-label caption>{{ task.due_date }}</q-item-label>
             </q-item-section>
         </q-item>
+        <q-item v-if="taskStore.tasks.length === 0" clickable>
+            <q-item-section>
+                <q-item-label>Aucune tâche pour ce projet</q-item-label>
+            </q-item-section>
+        </q-item>
     </q-scroll-area>
+    <task-dialog :openTaskDialog :taskDialogMode @addTask="addTaskToProject" @close="openTaskDialog= false" ></task-dialog>
     <edit-project-dialog :openEditDialog="openDialogEdit" @close="openDialogEdit=false" :project="store.currentProject"/>
     <q-btn color="primary" to="/project" label="Retour" />
 </template>

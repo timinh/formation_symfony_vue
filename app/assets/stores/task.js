@@ -28,5 +28,24 @@ export const useTaskStore = defineStore('task', {
                 this.isLoading = false;
             }
         },
+        async createTask(task) {
+            this.isLoading = true;
+            try {
+                const response = await api('tasks', 'POST', task);
+                Notify.create({
+                    message: 'La tâche a été créée avec succès',
+                    type: 'positive',
+                    position: 'top',
+                })
+            } catch (error) {
+                Notify.create({
+                    message: error,
+                    type: 'negative',
+                    position: 'top',
+                });
+            } finally {
+                this.isLoading = false;
+            }
+        }
     }
 });

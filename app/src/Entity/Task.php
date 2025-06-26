@@ -15,10 +15,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ApiResource(
-    normalizationContext: ['groups' => ['task:read', 'project:read']],
-    operations: [
-        new GetCollection()
-    ]
+    normalizationContext: ['groups' => ['task:read']],
 )]
 #[ApiFilter(NumericFilter::class, properties: ['project.id' => 'exact'])]
 #[ApiFilter(OrderFilter::class, properties: ['start_date' => 'DESC'])]
