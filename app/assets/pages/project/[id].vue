@@ -3,12 +3,14 @@ import {onBeforeMount, onMounted, ref} from "vue";
 import {useRoute, useRouter} from 'vue-router';
 import { useProjectStore } from '../../stores/project.js';
 import { useTaskStore } from '../../stores/task.js';
+import { useUserStore } from '../../stores/user.js';
 import {useQuasar} from "quasar";
 import EditProjectDialog from "../../components/editProjectDialog.vue";
 
 const $q = useQuasar();
 const store = useProjectStore();
 const taskStore = useTaskStore();
+const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -39,9 +41,9 @@ onMounted(() => {
 <template>
     <div v-if="store.currentProject" class="q-ma-md">
         <div class="row items-center justify-between">
-            <q-btn icon="delete" round color="negative" @click="deleteProject" />
+            <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" icon="delete" round color="negative" @click="deleteProject" />
             <div class="text-h2">Projet {{ store.currentProject.title }}</div>
-            <q-btn icon="edit" round color="primary" @click="openDialogEdit = true" />
+            <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" icon="edit" round color="primary" @click="openDialogEdit = true" />
         </div>
         <div class="q-ma-md">
             <p>{{ store.currentProject.description }}</p>

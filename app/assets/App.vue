@@ -9,8 +9,12 @@
                     <q-avatar>
                         <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
                     </q-avatar>
-                    Title
+                    Mes Projets
                 </q-toolbar-title>
+                <q-space />
+                <span class="text-h6" v-if="userStore.username">
+                    {{ userStore.username }}
+                </span>
             </q-toolbar>
 
             <q-tabs align="left">
@@ -29,19 +33,19 @@
     </q-layout>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
+import { onMounted, ref } from 'vue'
+import { jwtDecode } from 'jwt-decode'
+import { useUserStore } from './stores/user'
 
-export default {
-    setup () {
-        const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(false)
+const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
+const userStore = useUserStore()
 
-        return {
-            leftDrawerOpen,
-            toggleLeftDrawer () {
-                leftDrawerOpen.value = !leftDrawerOpen.value
-            }
-        }
-    }
-}
+onMounted(() => {
+    const { username, roles } = jwtDecode(user_token)
+    userStore.username = username
+    userStore.roles = roles
+})
+
 </script>

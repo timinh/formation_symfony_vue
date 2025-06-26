@@ -3,8 +3,11 @@ import {onMounted, ref} from "vue";
 import {api} from "../../api/Api.js";
 import ProjectList from "../../components/projectList.vue";
 import {useProjectStore} from "../../stores/project.js";
+import {useUserStore} from "../../stores/user.js";
 
 const store = useProjectStore();
+const userStore = useUserStore();
+
 const createProjectDialog = ref(false);
 const newProject = ref({
     title: '',
@@ -38,7 +41,7 @@ onMounted(() => {
     <div class="row items-center justify-between q-ma-lg">
         <q-btn icon="refresh" round  @click="store.getProjects" color="secondary"/>
         <div class="text-h2">Liste de mes projets</div>
-        <q-btn color="primary" icon="add" round @click="createProjectDialog = true" />
+        <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" color="primary" icon="add" round @click="createProjectDialog = true" />
     </div>
     <div>
         <project-list :projects="store.projects"/>
