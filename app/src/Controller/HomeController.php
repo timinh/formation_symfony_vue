@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,9 +14,12 @@ final class HomeController extends AbstractController
     #[Route('/project/{actions}', name: 'app_projects_actions')]
     #[Route('/task/{actions}', name: 'app_task_actions')]
     #[Route('/status/{actions}', name: 'app_status_actions')]
-    public function index(): Response
+    public function index(JWTTokenManagerInterface $jwtTokenManager): Response
     {
-        return $this->render('base.html.twig');
+        $user_token = $jwtTokenManager->create($this->getUser());
+        return $this->render('base.html.twig', [
+            'user_token' => $user_token
+        ]);
     }
 
     #[Route('/about', name: 'app_about')]

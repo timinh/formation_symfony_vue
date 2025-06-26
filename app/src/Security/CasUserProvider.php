@@ -6,11 +6,13 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class CasUserProvider implements UserProviderInterface
 {
     public function __construct(
-        private readonly EntityManagerInterface $em
+        private readonly EntityManagerInterface $em,
+        private readonly UserPasswordHasherInterface $passwordHasher
     )
     {
     }
@@ -24,6 +26,7 @@ class CasUserProvider implements UserProviderInterface
         $user = (new User)
                 ->setUsername($identifier)
                 ->setRoles(['ROLE_USER']);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $identifier));
         $this->em->persist($user);
         $this->em->flush();
 
