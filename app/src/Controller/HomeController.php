@@ -2,15 +2,19 @@
 
 namespace App\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Component\Mercure\HubInterface;
 
 final class HomeController extends AbstractController
 {
+    public function __construct(
+        private HubInterface $hub
+    ) {}
+
     private function getJWTToken(JWTTokenManagerInterface $jwtTokenManager): string
     {
         return $jwtTokenManager->create($this->getUser());
@@ -24,6 +28,7 @@ final class HomeController extends AbstractController
     #[Route('/status/{actions}', name: 'app_status_actions')]
     public function index(JWTTokenManagerInterface $jwtTokenManager): Response
     {
+        $this->connectdUser();
         return $this->render(
             'base.html.twig',
             ['user_token' => $this->getJWTToken($jwtTokenManager)]
@@ -46,5 +51,18 @@ final class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'user_token' => $this->getJWTToken($jwtTokenManager),
         ]);
+    }
+
+    private function connectdUser(): void
+    {
+        // Publish a message to the Mercure hub
+        $update = new Update(
+            'connected_users',
+            json_encode([
+                'username' => $this->getUser()->getUserIdentifier(),
+                'connected_at' => (new \DateTime())->format('H:i:s')
+            ])
+        );
+        $this->hub->publish($update);
     }
 }

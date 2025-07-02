@@ -19,9 +19,9 @@
         </q-header>
 
         <q-drawer show-if-above v-model="leftDrawerOpen" side="left" behavior="desktop">
-            <div>List de mes projets</div>
+            <connected-users />
         </q-drawer>
-
+        
         <q-page-container>
             <router-view />
         </q-page-container>
@@ -29,19 +29,11 @@
     </q-layout>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
+import connectedUsers from './components/connectedUsers.vue'
 
-export default {
-    setup () {
-        const leftDrawerOpen = ref(false)
+const leftDrawerOpen = ref(false)
 
-        return {
-            leftDrawerOpen,
-            toggleLeftDrawer () {
-                leftDrawerOpen.value = !leftDrawerOpen.value
-            }
-        }
-    }
-}
+const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
 </script>
