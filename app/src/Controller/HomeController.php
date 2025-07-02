@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -36,7 +37,7 @@ final class HomeController extends AbstractController
     ): Response
     {
         // Publish a message to the Mercure hub
-        $update = new \Symfony\Component\Mercure\Update(
+        $update = new Update(
             'see_about',
             json_encode(['username' => $this->getUser()->getUserIdentifier()])
         );

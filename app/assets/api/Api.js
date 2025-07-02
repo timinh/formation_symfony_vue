@@ -1,4 +1,5 @@
 import axios from "axios";
+import {useProjectStore} from "../stores/project.js";
 
 let token = '123'
 try{
@@ -21,4 +22,18 @@ export function api(url, method, data = null) {
         data: data,
         headers: header
     })
+}
+
+export function linkUrl(response, path, id) {
+        const links = response.headers.link.split(',');
+        const nextLink = links.find(link => link.includes('rel="mercure"'));
+        if (nextLink) {
+            const projectStore = useProjectStore();
+            const nextUrl = nextLink.split(';')[0].trim().slice(1, -1);
+            const domainName = document.location.hostname;
+            const eventSource = new EventSource(nextUrl+"?topic=http://"+domainName+path+id);
+            eventSource.onmessage = (event) => {
+                projectStore.currentProject = JSON.parse(event.data);
+            }
+        }
 }

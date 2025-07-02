@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {api} from "../api/Api.js";
+import {api, linkUrl} from "../api/Api.js";
 import {Notify} from "quasar";
 
 export const useProjectStore = defineStore('project', {
@@ -41,15 +41,7 @@ export const useProjectStore = defineStore('project', {
                 });
                 this.currentProject = response.data;
                 if(response.headers.link) {
-                    const links = response.headers.link.split(',');
-                    const nextLink = links.find(link => link.includes('rel="mercure"'));
-                    if (nextLink) {
-                        const nextUrl = nextLink.split(';')[0].trim().slice(1, -1);
-                        const eventSource = new EventSource(nextUrl+"?topic=http://dev.local.uca.fr/api/projects/139");
-                        eventSource.onmessage = (event) => {
-                            this.currentProject = JSON.parse(event.data);
-                        }
-                    }
+                    linkUrl(response, '/api/projects/', id);
                 }
             } catch (error) {
                 Notify.create({
