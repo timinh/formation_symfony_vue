@@ -5,6 +5,8 @@ namespace App\Controller;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
@@ -14,9 +16,20 @@ final class HomeController extends AbstractController
     #[Route('/project/{actions}', name: 'app_projects_actions')]
     #[Route('/task/{actions}', name: 'app_task_actions')]
     #[Route('/status/{actions}', name: 'app_status_actions')]
-    public function index(JWTTokenManagerInterface $jwtTokenManager): Response
+    public function index(JWTTokenManagerInterface $jwtTokenManager, HubInterface $hub): Response
     {
-        $user_token = $jwtTokenManager->create($this->getUser());
+        $user = $this->getUser();
+        $user_token = $jwtTokenManager->create($user);
+
+        $update = new Update(
+            'user_connected',
+            \json_encode([
+                'username' => $user->getUserIdentifier(),
+                'connected_at' => (new \DateTime())->format('H:i:s'),
+            ])
+        );
+        $hub->publish($update);
+
         return $this->render('base.html.twig', [
             'user_token' => $user_token
         ]);

@@ -23,7 +23,7 @@
         </q-header>
 
         <q-drawer show-if-above v-model="leftDrawerOpen" side="left" behavior="desktop">
-            <div>List de mes projets</div>
+            <connected-users />
         </q-drawer>
 
         <q-page-container>
@@ -37,6 +37,7 @@
 import { onMounted, ref } from 'vue'
 import { jwtDecode } from 'jwt-decode'
 import { useUserStore } from './stores/user'
+import connectedUsers from './components/connectedUsers.vue'
 
 const leftDrawerOpen = ref(false)
 const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
