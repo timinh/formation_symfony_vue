@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {api} from "../api/Api.js";
+import {api, useMercure} from "../api/Api.js";
 import {Notify} from "quasar";
 
 export const useProjectStore = defineStore('project', {
@@ -40,20 +40,8 @@ export const useProjectStore = defineStore('project', {
                     position: 'top',
                 });
                 this.currentProject = response.data;
-                if(response.headers.link) {
-                    const links = response.headers.link.split(',');
-                    const nextLink = links.find(link => link.includes('rel="mercure"'))
-                    if(nextLink) {
-                        const url = nextLink.split(';')[0].trim();
-                        const urlWithoutBrackets = url.slice(1, -1);
-                        const domainName = document.location.hostname;
-                        const eventSource = new EventSource(urlWithoutBrackets + '?topic=http://' + domainName+ '/api/projects/' + id);
-                        eventSource.onmessage = (event) => {
-                            console.log(event);
-                            this.currentProject = JSON.parse(event.data);
-                        }
-                    }
-                }
+                //EXERCICE : Sortir le code sous forme d'un composable js pour le réutiliser dans la méthode getProjectsById !
+                useMercure(response, '/api/projects/'+id);
             } catch (error) {
                 Notify.create({
                     message: error,
