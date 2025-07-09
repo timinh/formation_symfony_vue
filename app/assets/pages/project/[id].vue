@@ -1,12 +1,14 @@
 <script setup>
-import {onBeforeMount, onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useRoute, useRouter} from 'vue-router';
 import { useProjectStore } from '../../stores/project.js';
 import { useTaskStore } from '../../stores/task.js';
 import { useUserStore } from '../../stores/user.js';
-import {useQuasar} from "quasar";
+import { useQuasar} from "quasar";
 import EditProjectDialog from "../../components/editProjectDialog.vue";
 import TaskDialog from "../../components/taskDialog.vue";
+
+import { useEventSource } from '@vueuse/core'
 
 const $q = useQuasar();
 const store = useProjectStore();
@@ -14,6 +16,8 @@ const taskStore = useTaskStore();
 const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
+
+const pdfCreating = ref(false);
 
 const openDialogEdit = ref(false);
 
@@ -56,10 +60,56 @@ const addTaskToProject = async (task) => {
     openTaskDialog.value = false;
 }
 
+const printProjectTasks = async () => {
+    try {
+        const response = await fetch(`/project/${route.params.id}/print-tasks`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        $q.notify({
+            type: 'info',
+            position: 'top',
+            message: data.message
+        });
+    } catch (error) {
+        console.log(error);
+        $q.notify({
+            type: 'negative',
+            position: 'top',
+            message: error.message
+        });
+    }
+}
+
 onMounted(() => {
     store.getProjectById(route.params.id)
     taskStore.getTasks(route.params.id);
 });
+
+const { data: printStartData } = useEventSource(
+    '/.well-known/mercure?topic=project_print_start',
+    [],
+    { 
+        autoReconnect: true
+    }
+)
+
+const { data: printEndData } = useEventSource(
+    '/.well-known/mercure?topic=project_print_end',
+    [],
+    { 
+        autoReconnect: true
+    }
+)
+watch(printStartData, (data) => {
+    console.log('start : ' + data);
+})
+watch(printEndData, (data) => {
+    console.log('end : ' + data);
+})
+
 </script>
 
 <template>
@@ -67,6 +117,9 @@ onMounted(() => {
         <div class="row items-center justify-between">
             <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" icon="delete" round color="negative" @click="deleteProject" />
             <div class="text-h2">Projet {{ store.currentProject.title }}</div>
+            <q-space />
+            <q-btn class="q-mr-sm" v-if="userStore.roles.includes('ROLE_ADMIN')" icon="print" round color="primary" @click="printProjectTasks" />
+            <!-- <q-btn class="q-mr-sm"  :icon="pdfCreating ? 'spinner' : 'download'" round color="primary" @click="downloadPdf"/> -->
             <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" icon="edit" round color="primary" @click="openDialogEdit = true" />
         </div>
         <div class="q-ma-md">
