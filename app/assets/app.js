@@ -2,9 +2,10 @@ import './app.css';
 import { createApp } from 'vue';
 import { createPinia } from "pinia";
 import App from './App.vue';
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHistory} from "vue-router/auto";
 import { routes } from 'vue-router/auto-routes';
 import {Dialog, Notify, Quasar} from 'quasar';
+import { useRequiresRoleMiddleware } from './composition/use-requires-role-middleware';
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -25,4 +26,4 @@ app.use(Quasar, {
 })
 app.mount('#app');
 
-console.log('App is running!');
+useRequiresRoleMiddleware(router);

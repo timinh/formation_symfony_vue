@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeMount, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from 'vue-router';
 import { useProjectStore } from '../../stores/project.js';
 import { useTaskStore } from '../../stores/task.js';
@@ -35,6 +35,11 @@ onMounted(() => {
     taskStore.getTasks(route.params.id);
 });
 </script>
+
+<route lang="yaml">
+meta:
+  requiresRole: 'ROLE_SUPER_ADMIN'
+</route>
 
 <template>
     <div v-if="store.currentProject" class="q-ma-md">

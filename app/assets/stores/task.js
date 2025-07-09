@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {api} from "../api/Api.js";
-import {is, Notify} from "quasar";
+import {Notify} from "quasar";
 
 export const useTaskStore = defineStore('task', {
     state: () => ({

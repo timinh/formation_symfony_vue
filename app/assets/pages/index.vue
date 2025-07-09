@@ -17,6 +17,3 @@ eventSource.onmessage = event => {
 <p>index page</p>
 </template>
 
-<style scoped>
-
-</style>

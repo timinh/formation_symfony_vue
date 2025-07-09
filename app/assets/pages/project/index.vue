@@ -63,6 +63,7 @@ onMounted(() => {
 
 </template>
 
-<style scoped>
-
-</style>
+<route lang="yaml">
+meta:
+  requiresRole: 'ROLE_USER'
+</route>

@@ -11,9 +11,9 @@ onMounted(() => {
         users.value.push(data);
     };
 
-    eventSource.onerror = (error) => {
-        console.error('EventSource failed:', error);
-    };
+    // eventSource.onerror = (error) => {
+    //     console.error('EventSource failed:', error);
+    // };
 });
 </script>
 
