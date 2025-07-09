@@ -22,6 +22,7 @@ final class HomeController extends AbstractController
 
 
     #[Route('/', name: 'app_home')]
+    #[Route('/unauthorized', name: 'app_unauthorized')]
     #[Route('/project', name: 'app_project')]
     #[Route('/project/{actions}', name: 'app_projects_actions')]
     #[Route('/task/{actions}', name: 'app_task_actions')]
