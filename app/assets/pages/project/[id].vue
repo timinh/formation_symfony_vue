@@ -9,6 +9,7 @@ import EditProjectDialog from "../../components/editProjectDialog.vue";
 import TaskDialog from "../../components/taskDialog.vue";
 
 import { useEventSource } from '@vueuse/core'
+import ShareTaskDialog from "../../components/shareTaskDialog.vue";
 
 const $q = useQuasar();
 const store = useProjectStore();
@@ -23,6 +24,13 @@ const openDialogEdit = ref(false);
 
 const openTaskDialog = ref(false);
 const taskDialogMode= ref('add');
+const openShareDialog = ref(false);
+const targetTaskId = ref(null);
+
+const shareDialog = (id) => {
+    targetTaskId.value = id;
+    openShareDialog.value = true;
+}
 
 const deleteProject = () => {
     $q.dialog({
@@ -90,7 +98,7 @@ onMounted(() => {
 const { data: printStartData } = useEventSource(
     '/.well-known/mercure?topic=project_print_start',
     [],
-    { 
+    {
         autoReconnect: true
     }
 )
@@ -98,7 +106,7 @@ const { data: printStartData } = useEventSource(
 const { data: printEndData } = useEventSource(
     '/.well-known/mercure?topic=project_print_end',
     [],
-    { 
+    {
         autoReconnect: true
     }
 )
@@ -138,6 +146,9 @@ watch(printEndData, (data) => {
                 <q-item-label caption>{{ task.description }} </q-item-label>
                 <q-item-label caption>{{ task.due_date }}</q-item-label>
             </q-item-section>
+            <q-item-section side>
+                <q-btn icon="share" round color="primary" @click="shareDialog(task.id)" />
+            </q-item-section>
         </q-item>
         <q-item v-if="taskStore.tasks.length === 0" clickable>
             <q-item-section>
@@ -148,4 +159,5 @@ watch(printEndData, (data) => {
     <task-dialog :openTaskDialog :taskDialogMode @addTask="addTaskToProject" @close="openTaskDialog= false" ></task-dialog>
     <edit-project-dialog :openEditDialog="openDialogEdit" @close="openDialogEdit=false" :project="store.currentProject"/>
     <q-btn color="primary" to="/project" label="Retour" />
+    <share-task-dialog :open-dialog="openShareDialog" :id-task="targetTaskId" @close="openShareDialog = false"/>
 </template>

@@ -47,10 +47,11 @@ class Task
     #[Groups(['task:read'])]
     private ?Project $project = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['project:read'])]
-    private ?Status $status = null;
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tasks')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -117,14 +118,26 @@ class Task
         return $this;
     }
 
-    public function getStatus(): ?Status
+    public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    public function setStatus(?Status $status): static
+    public function setStatus(string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
