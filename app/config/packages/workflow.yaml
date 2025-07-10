@@ -1,0 +1,24 @@
+framework:
+    workflows:
+        task_status:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Entity\Task
+            places:
+                - En attente
+                - En cours
+                - Terminé
+                - Annulé
+            transitions:
+                start_task:
+                    from: En attente
+                    to: En cours
+                end_task:
+                    from: En cours
+                    to: Terminé
+                cancel_task:
+                    from: [En attente, En cours]
+                    to: Annulé

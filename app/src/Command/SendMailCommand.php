@@ -12,7 +12,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 #[AsCommand(
     name: 'app:send-mail',
@@ -20,7 +22,12 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 )]
 class SendMailCommand extends Command
 {
-    public function __construct(private readonly SendMailService $sendMailService, private readonly TaskRepository $taskRepository)
+    public function __construct(
+        private readonly SendMailService $sendMailService,
+        private readonly TaskRepository $taskRepository,
+        #[Target('task_status')]
+        private readonly WorkflowInterface $taskWorkflow
+    )
     {
         parent::__construct();
     }
@@ -36,15 +43,19 @@ class SendMailCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $tasks = $this->taskRepository->findTaskEnded(new \DateTime());
+        $tasks = $this->taskRepository->findBy(['status' => 'En cours']);
 
         foreach ($tasks as $task) {
             if($task->getUser()) {
-                $mail = new MailDto();
-                $mail->to = $task->getUser()->getUsername().'@uca.fr';
-                $mail->subject = 'Tâche en retard !';
-                $mail->body = 'Attention, la date de la tâche : '.$task->getTitle().' est dépassée.';
-                $this->sendMailService->sendMail($mail);
+
+                try {
+                    $this->taskWorkflow->apply($task, 'end_task');
+                } catch (\LogicException $e) {
+                    $io->error($e);
+                    return Command::FAILURE;
+                }
+
+                $this->taskRepository->add($task);
             }
         }
         $io->success('Mail envoyé avec succès !');
