@@ -119,8 +119,14 @@ watch(printEndData, (data) => {
     isPrinting.value = false;
     window.open(`http://${host}/${data.pdf_path}`, '_blank');
 })
-
 </script>
+
+<route lang="yaml">
+meta:
+    requireAuth: true
+    roles:
+        - ROLE_ADMIN
+</route>
 
 <template>
     <div v-if="store.currentProject" class="q-ma-md">
