@@ -58,6 +58,7 @@ class PdfService
                 ]
             )
         );
+        \sleep(2);
         $this->hub->publish($print_end);
         
     }

@@ -17,7 +17,7 @@ const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 
-const pdfCreating = ref(false);
+const isPrinting = ref(false);
 
 const openDialogEdit = ref(false);
 
@@ -74,7 +74,6 @@ const printProjectTasks = async () => {
             message: data.message
         });
     } catch (error) {
-        console.log(error);
         $q.notify({
             type: 'negative',
             position: 'top',
@@ -104,10 +103,13 @@ const { data: printEndData } = useEventSource(
     }
 )
 watch(printStartData, (data) => {
-    console.log('start : ' + data);
+    isPrinting.value = true;
 })
 watch(printEndData, (data) => {
-    console.log('end : ' + data);
+    data = JSON.parse(data);
+    const { host } = window.location;
+    isPrinting.value = false;
+    window.open(`http://${host}/${data.pdf_path}`, '_blank');
 })
 
 </script>
@@ -118,8 +120,7 @@ watch(printEndData, (data) => {
             <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" icon="delete" round color="negative" @click="deleteProject" />
             <div class="text-h2">Projet {{ store.currentProject.title }}</div>
             <q-space />
-            <q-btn class="q-mr-sm" v-if="userStore.roles.includes('ROLE_ADMIN')" icon="print" round color="primary" @click="printProjectTasks" />
-            <!-- <q-btn class="q-mr-sm"  :icon="pdfCreating ? 'spinner' : 'download'" round color="primary" @click="downloadPdf"/> -->
+            <q-btn class="q-mr-sm" v-if="userStore.roles.includes('ROLE_ADMIN')" :disabled="isPrinting" icon="print" :loading="isPrinting" round color="primary" @click="printProjectTasks" />
             <q-btn v-if="userStore.roles.includes('ROLE_ADMIN')" icon="edit" round color="primary" @click="openDialogEdit = true" />
         </div>
         <div class="q-ma-md">
