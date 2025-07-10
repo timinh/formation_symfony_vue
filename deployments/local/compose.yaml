@@ -6,6 +6,8 @@ services:
         extends:
             file: ../services/frankenphp.yaml
             service: frankenphp-local
+        volumes:
+            - ./entrypoint.sh:/tmp/entrypoint.sh
     ### frankenphp ###
     ###> mariadb ###
     db:
