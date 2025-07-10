@@ -16,6 +16,16 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
+    public function findTaskEnded(\DateTime $date)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.due_date < :date')
+            ->setParameter('date', $date)
+            ->orderBy('t.due_date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Task[] Returns an array of Task objects
     //     */
