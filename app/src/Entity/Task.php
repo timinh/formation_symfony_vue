@@ -28,18 +28,19 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['project:read', 'task:read'])]
+    #[Groups(['project:read', 'task:read', 'user:tasks:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['task:read'])]
+    #[Groups(['task:read', 'user:tasks:read'])]
     private ?string $description = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user:tasks:read'])]
     private ?\DateTime $start_date = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['project:read', 'task:read'])]
+    #[Groups(['user:tasks:read'])]
     private ?\DateTime $due_date = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
@@ -48,6 +49,7 @@ class Task
     private ?Project $project = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:tasks:read'])]
     private ?string $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]

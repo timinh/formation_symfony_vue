@@ -5,7 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +21,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[ApiResource(
     normalizationContext: ['groups' => ['user:read']],
     operations: [
-        new GetCollection()
+        new GetCollection(),
+        new Get(uriTemplate: '/users/{id}/tasks',
+            normalizationContext: ['groups' => ['user:tasks:read']])
     ]
 )]
 
@@ -51,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Task>
      */
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'user')]
+    #[Groups(['user:tasks:read'])]
     private Collection $tasks;
 
     public function __construct()

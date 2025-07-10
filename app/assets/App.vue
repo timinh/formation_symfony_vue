@@ -19,6 +19,7 @@
 
             <q-tabs align="left">
                 <q-route-tab to="/project" label="Projets" />
+                <q-route-tab to="/mytasks" label="Mes Tâches assignées" />
             </q-tabs>
         </q-header>
 
@@ -44,7 +45,7 @@ const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
 const userStore = useUserStore()
 
 onMounted(() => {
-    const { username, roles } = jwtDecode(user_token)
+    const { username, roles, id } = jwtDecode(user_token)
     userStore.username = username
     userStore.roles = roles
 })

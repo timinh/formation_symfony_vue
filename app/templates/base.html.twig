@@ -16,6 +16,7 @@
     {% if user_token %}
         <script language="javascript">
             const user_token = "{{ user_token|e('js') }}";
+            const user_id = "{{ user_id|e('js') }}";
         </script>
     {% endif %}
     </body>

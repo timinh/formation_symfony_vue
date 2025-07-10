@@ -14,6 +14,7 @@ const props = defineProps({
     }
 })
 
+
 const filterFn  = (val, update, abort) => {
     update(async () => {
         const needle = val.toLocaleLowerCase()

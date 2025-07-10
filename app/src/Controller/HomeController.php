@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,11 +13,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
+    #[Route('/mytasks', name: 'app_mytasks')]
     #[Route('/project', name: 'app_project')]
     #[Route('/project/{actions}', name: 'app_projects_actions')]
     #[Route('/task/{actions}', name: 'app_task_actions')]
     #[Route('/status/{actions}', name: 'app_status_actions')]
-    public function index(JWTTokenManagerInterface $jwtTokenManager, HubInterface $hub): Response
+    public function index(JWTTokenManagerInterface $jwtTokenManager, HubInterface $hub, UserRepository $userRepository): Response
     {
         $user = $this->getUser();
         $user_token = $jwtTokenManager->create($user);
@@ -30,7 +32,9 @@ final class HomeController extends AbstractController
         );
         $hub->publish($update);
 
+        $userParams = $userRepository->findOneBy(['username' => $user->getUserIdentifier()]);
         return $this->render('base.html.twig', [
+            'user_id' => $userParams->getId(),
             'user_token' => $user_token
         ]);
     }
