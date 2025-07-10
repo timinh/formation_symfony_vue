@@ -1,39 +1,21 @@
 <template>
-    <q-layout view="hHh LpR fFf">
-
-        <q-header class="bg-primary text-white" height-hint="98">
-            <q-toolbar>
-                <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
-                <q-toolbar-title>
-                    <q-avatar>
-                        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
-                    </q-avatar>
-                    Title
-                </q-toolbar-title>
-            </q-toolbar>
-
-            <q-tabs align="left">
-                <q-route-tab to="/project" label="Projets" />
-            </q-tabs>
-        </q-header>
-
-        <q-drawer show-if-above v-model="leftDrawerOpen" side="left" behavior="desktop">
-            <connected-users />
-        </q-drawer>
-        
-        <q-page-container>
-            <router-view />
-        </q-page-container>
-
-    </q-layout>
+    <component :is="layout">
+        <router-view />
+    </component>
+    
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import connectedUsers from './components/connectedUsers.vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import admin from './layouts/admin.vue';
+import connected from './layouts/default.vue';
 
-const leftDrawerOpen = ref(false)
+const layout = ref(connected)
 
-const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value
+const router = useRouter();
+router.beforeEach((to, from, next) => {
+    layout.value = to.meta?.layout == 'admin' ? admin : connected
+    next()
+});
 </script>

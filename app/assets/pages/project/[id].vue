@@ -39,6 +39,7 @@ onMounted(() => {
 <route lang="yaml">
 meta:
   requiresRole: 'ROLE_ADMIN'
+  layout: admin
 </route>
 
 <template>
